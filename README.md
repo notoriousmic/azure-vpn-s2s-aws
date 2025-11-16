@@ -2,6 +2,8 @@
 
 This Terraform project creates a highly available, BGP-enabled site-to-site VPN connection between Azure and AWS, following Microsoft's official documentation.
 
+> **💡 Module Usage**: This project can be used as a reusable Terraform module! See [MODULE.md](MODULE.md) for detailed usage examples and documentation.
+
 ## Architecture
 
 ```mermaid
@@ -382,7 +384,7 @@ terraform destroy
 
 ## License
 
-This project is provided as-is for educational and reference purposes.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Support
 
