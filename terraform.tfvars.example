@@ -1,0 +1,78 @@
+# ============================================================================
+# Example Terraform Variables File
+# ============================================================================
+# Copy this file to terraform.tfvars and update with your actual values
+# The terraform.tfvars file should NOT be committed to version control
+#
+# Usage: cp terraform.tfvars.example terraform.tfvars
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# General Configuration
+# ----------------------------------------------------------------------------
+
+project_name = "azure-aws-vpn"
+environment  = "prod"
+
+# Additional tags (optional)
+tags = {
+  Owner       = "YourName"
+  CostCenter  = "IT-Infrastructure"
+  Department  = "Networking"
+}
+
+# ----------------------------------------------------------------------------
+# Azure Configuration
+# ----------------------------------------------------------------------------
+
+azure_location = "West Europe"
+
+# Azure Virtual Network CIDR - must not overlap with AWS VPC
+azure_vnet_address_space = ["10.1.0.0/16"]
+
+# Gateway subnet - minimum /27 recommended for production
+azure_gateway_subnet_prefix = ["10.1.255.0/27"]
+
+# Azure VPN Gateway Configuration
+azure_vpn_gateway_name_prefix = "VNet1GW"
+azure_vpn_gateway_sku         = "VpnGw2AZ"        # Options: VpnGw1, VpnGw2, VpnGw1AZ, VpnGw2AZ, etc.
+azure_vpn_gateway_generation  = "Generation2"    # Options: Generation1, Generation2
+azure_bgp_asn                 = 65000            # Must be different from AWS ASN
+
+# Availability zones for public IPs (zone-redundant)
+azure_availability_zones = ["1", "2", "3"]
+
+# ----------------------------------------------------------------------------
+# AWS Configuration
+# ----------------------------------------------------------------------------
+
+aws_region = "us-east-1"
+
+# AWS VPC CIDR - must not overlap with Azure VNet
+aws_vpc_cidr = "10.2.0.0/16"
+
+# AWS Virtual Private Gateway ASN
+# Use 64512 for Amazon default, or choose another private ASN (64512-65534)
+aws_vpn_gateway_asn = 64512
+
+# ----------------------------------------------------------------------------
+# VPN Tunnel Pre-Shared Keys (REQUIRED)
+# ----------------------------------------------------------------------------
+# These MUST be strong, random strings (min 8 chars, max 64 chars)
+# Use a password generator or: openssl rand -base64 32
+# These keys must match between AWS and Azure for each tunnel
+
+tunnel1_instance0_psk = "CHANGE_ME_SecureRandomString1"
+tunnel2_instance0_psk = "CHANGE_ME_SecureRandomString2"
+tunnel1_instance1_psk = "CHANGE_ME_SecureRandomString3"
+tunnel2_instance1_psk = "CHANGE_ME_SecureRandomString4"
+
+# ----------------------------------------------------------------------------
+# Notes
+# ----------------------------------------------------------------------------
+# 1. The BGP APIPA addresses are pre-configured in locals.tf and follow
+#    the Azure-AWS VPN documentation standard
+# 2. Total of 4 tunnels will be created (2 connections × 2 tunnels each)
+# 3. VPN Gateway deployment takes approximately 30-45 minutes
+# 4. Ensure your Azure and AWS credentials are configured before running
+# ============================================================================
