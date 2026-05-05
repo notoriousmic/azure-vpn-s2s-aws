@@ -2,10 +2,13 @@
 # Licensed under the MIT License. See LICENSE file in the project root for license information.
 
 # ==============================================================================
-# Data Sources
+# Default Test — Plan smoke test for the default example.
 # ==============================================================================
 
-# Data source for availability zones (all patterns)
-data "aws_availability_zones" "available" {
-  state = "available"
+run "setup" {
+  command = plan
+
+  module {
+    source = "./examples/default"
+  }
 }

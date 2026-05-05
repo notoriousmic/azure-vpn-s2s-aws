@@ -1,6 +1,9 @@
-# ============================================================================
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License. See LICENSE file in the project root for license information.
+
+# ==============================================================================
 # Azure VPN Gateway Resources
-# ============================================================================
+# ==============================================================================
 
 # Create first public IP for VPN Gateway (Instance 0)
 resource "azurerm_public_ip" "vpn_gateway_pip1" {
@@ -43,20 +46,17 @@ resource "azurerm_virtual_network_gateway" "vpn_gateway" {
   bgp_settings {
     asn = var.azure_bgp_asn
 
-    # Instance 0 BGP APIPA addresses
     peering_addresses {
       ip_configuration_name = "vnetGatewayConfig1"
       apipa_addresses       = local.azure_instance0_bgp_ips
     }
 
-    # Instance 1 BGP APIPA addresses
     peering_addresses {
       ip_configuration_name = "vnetGatewayConfig2"
       apipa_addresses       = local.azure_instance1_bgp_ips
     }
   }
 
-  # IP configuration for Instance 0
   ip_configuration {
     name                          = "vnetGatewayConfig1"
     public_ip_address_id          = azurerm_public_ip.vpn_gateway_pip1.id
@@ -64,7 +64,6 @@ resource "azurerm_virtual_network_gateway" "vpn_gateway" {
     subnet_id                     = azurerm_subnet.gateway.id
   }
 
-  # IP configuration for Instance 1 (active-active mode)
   ip_configuration {
     name                          = "vnetGatewayConfig2"
     public_ip_address_id          = azurerm_public_ip.vpn_gateway_pip2.id
@@ -74,7 +73,6 @@ resource "azurerm_virtual_network_gateway" "vpn_gateway" {
 
   tags = local.common_tags
 
-  # VPN Gateway creation typically takes 30-45 minutes
   timeouts {
     create = "90m"
     update = "90m"

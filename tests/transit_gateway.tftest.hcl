@@ -2,10 +2,18 @@
 # Licensed under the MIT License. See LICENSE file in the project root for license information.
 
 # ==============================================================================
-# Data Sources
+# Transit Gateway Test — Plan smoke test for the transit_gateway example.
 # ==============================================================================
 
-# Data source for availability zones (all patterns)
-data "aws_availability_zones" "available" {
-  state = "available"
+run "setup" {
+  command = plan
+
+  module {
+    source = "./examples/transit_gateway"
+  }
+
+  variables {
+    aws_transit_gateway_id = "tgw-0123456789abcdef0"
+    aws_vpc_id             = "vpc-0123456789abcdef0"
+  }
 }

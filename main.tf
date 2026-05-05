@@ -2,10 +2,11 @@
 # Licensed under the MIT License. See LICENSE file in the project root for license information.
 
 # ==============================================================================
-# Data Sources
+# Resource Group
 # ==============================================================================
 
-# Data source for availability zones (all patterns)
-data "aws_availability_zones" "available" {
-  state = "available"
+resource "azurerm_resource_group" "this" {
+  location = var.azure_location
+  name     = local.azure_resource_group_name
+  tags     = local.common_tags
 }

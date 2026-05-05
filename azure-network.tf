@@ -1,14 +1,9 @@
-# ============================================================================
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License. See LICENSE file in the project root for license information.
+
+# ==============================================================================
 # Azure Network Resources
-# ============================================================================
-
-# Create a resource group
-resource "azurerm_resource_group" "this" {
-  name     = local.azure_resource_group_name
-  location = var.azure_location
-
-  tags = local.common_tags
-}
+# ==============================================================================
 
 # Create a virtual network
 resource "azurerm_virtual_network" "this" {
